@@ -1,6 +1,6 @@
-package com.company.models;
+package com.java.trials.models;
 
-import com.company.models.enums.TaskType;
+import com.java.trials.models.enums.TaskType;
 
 import java.time.LocalDate;
 import java.util.HashSet;

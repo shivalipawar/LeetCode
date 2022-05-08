@@ -1,4 +1,4 @@
-package com.company;
+package com.java.trials;
 
 import java.util.ArrayList;
 import java.util.Collections;

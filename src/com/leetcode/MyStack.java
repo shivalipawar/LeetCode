@@ -1,7 +1,6 @@
-package com.company;
+package com.leetcode;
 
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 //Stack using 2 queue where Pop takes O(n) and push O(1)

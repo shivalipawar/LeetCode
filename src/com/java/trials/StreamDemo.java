@@ -1,14 +1,12 @@
-package com.company;
+package com.java.trials;
 
-import com.company.models.Task;
-import com.company.models.enums.TaskType;
+import com.java.trials.models.Task;
+import com.java.trials.models.enums.TaskType;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class StreamDemo {
 

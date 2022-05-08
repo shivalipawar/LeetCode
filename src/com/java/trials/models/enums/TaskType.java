@@ -1,4 +1,4 @@
-package com.company.models.enums;
+package com.java.trials.models.enums;
 
 public enum TaskType {
     READING,WRITING,CODING;

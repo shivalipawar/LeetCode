@@ -1,4 +1,4 @@
-package com.company;
+package com.leetcode;
 
 import java.text.DecimalFormat;
 import java.util.*;

@@ -1,4 +1,4 @@
-package com.company;
+package com.leetcode;
 
 import java.time.LocalDateTime;
 import java.util.*;
