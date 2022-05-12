@@ -1,4 +1,4 @@
-package com.java.trials;
+package com.java.trials.designpattern;
 
 public class BuilderPattern {
 
