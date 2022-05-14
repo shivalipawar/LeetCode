@@ -228,7 +228,75 @@ public class Solution {
 //        System.out.println("Integer to Roman : " + solution.intToRoman(1994));
 //        System.out.println("Number to words : " + solution.numberToWords(12345));
 //        System.out.println("Plus one in and return array : " + Arrays.toString(solution.plusOne(new int[]{9})));
-        System.out.println("Multiply strings : " + solution.multiply("123456789", "987654321"));
+//        System.out.println("Multiply strings : " + solution.multiply("123456789", "987654321"));
+//        System.out.println("String half is same : " + solution.halvesAreAlike("textbook"));
+        System.out.println("String are equivalent : " + solution.checkAlmostEquivalent("zzzyyy","iiiiii"));
+    }
+
+    //2068 - Strings are equivalent
+    public boolean checkAlmostEquivalent(String word1, String word2) {
+        boolean isEquivalent = true;
+        Map<Character,Integer> charCountWord1 = new HashMap<>();
+        Map<Character,Integer> charCountWord2 = new HashMap<>();
+        for (int i = 0; i < word1.length(); i++) {
+            if(charCountWord1.containsKey(word1.charAt(i)))
+                charCountWord1.put(word1.charAt(i),charCountWord1.get(word1.charAt(i))+1);
+            else
+                charCountWord1.put(word1.charAt(i),1);
+        }
+
+        for (int i = 0; i < word2.length(); i++) {
+            if(charCountWord2.containsKey(word2.charAt(i)))
+                charCountWord2.put(word2.charAt(i),charCountWord2.get(word2.charAt(i))+1);
+            else
+                charCountWord2.put(word2.charAt(i),1);
+        }
+        for (Map.Entry<Character, Integer> entry : charCountWord1.entrySet()) {
+            Character key = entry.getKey();
+            if (Math.abs(entry.getValue() - charCountWord2.getOrDefault(key, 0)) > 3) {
+                isEquivalent = false;
+            }
+            if(charCountWord2.containsKey(key)) charCountWord2.remove(key);
+        }
+
+        for (Map.Entry<Character,Integer> entry1:charCountWord2.entrySet()) {
+            if (Math.abs(entry1.getValue() - charCountWord1.getOrDefault(entry1.getKey(),0))>3){
+                isEquivalent = false;
+            }
+        }
+
+        return isEquivalent;
+    }
+
+    //1704 - String in halves is same
+    public boolean halvesAreAlike(String s) {
+        if(s.isEmpty()) return false;
+        int mid =  (s.length() - 1) / 2 ;
+        int count1 =0, count2=0;
+        int i= 0 , j = mid+1;
+        for (; i <= mid && j< s.length(); i++,j++) {
+            count1 += checkForVowel(s,i);
+            count2 += checkForVowel(s,j);
+        }
+        if(i <= mid){
+            for (; i <= mid; i++) {
+                count1 +=  checkForVowel(s,i);
+            }
+        }
+        if(j <= s.length()){
+            for (; j < s.length(); j++) {
+                count2 += checkForVowel(s,j);
+            }
+        }
+        return (count1 == count2);
+    }
+
+    private int checkForVowel(String s, int loopVariable) {
+        int count = 0 ;
+        if(s.charAt(loopVariable) == 'a' || s.charAt(loopVariable) == 'e' || s.charAt(loopVariable) == 'i' || s.charAt(loopVariable) == 'o' || s.charAt(loopVariable) == 'u'
+                || s.charAt(loopVariable) == 'A' || s.charAt(loopVariable) == 'E' || s.charAt(loopVariable) == 'I' || s.charAt(loopVariable) == 'O' || s.charAt(loopVariable) == 'U')
+            count++;
+        return count;
     }
 
     public String multiply(String num1, String num2) {
