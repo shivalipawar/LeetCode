@@ -1,5 +1,7 @@
 package com.leetcode;
 
+import com.java.trials.customHashMap.Entry;
+
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -230,37 +232,323 @@ public class Solution {
 //        System.out.println("Plus one in and return array : " + Arrays.toString(solution.plusOne(new int[]{9})));
 //        System.out.println("Multiply strings : " + solution.multiply("123456789", "987654321"));
 //        System.out.println("String half is same : " + solution.halvesAreAlike("textbook"));
-        System.out.println("String are equivalent : " + solution.checkAlmostEquivalent("zzzyyy","iiiiii"));
+//        System.out.println("String are equivalent : " + solution.checkAlmostEquivalent("zzzyyy","iiiiii"));
+//        System.out.println("Two Sum 2 : " + Arrays.toString(solution.twoSum2(new int[]{2,3,4}, 6)));
+//        System.out.println("Two Sum Max : " + solution.Max_Sum(new int[]{1, 9, 13, 10, 6, 10, 8, 10}, 8, 15));
+//        System.out.println("Three Sum : " + solution.threeSum(new int[]{0,0,0}, 0));
+//        System.out.println("Four Sum : " + solution.fourSum(new int[]{1, 0, -1, 0, -2, 2}, 0));
+//        solution.reverseInGroups(new ArrayList(Arrays.asList(1,2,3,4,5)), 5,3);
+//        System.out.println("Minimize the sum of product : " +solution.minValue(new int[] {6, 1, 9, 5, 4}, new int[] {3, 4, 8, 2, 4},5));
+        System.out.println("Factorial : " +solution.factorial(5));
+    }
+
+    private static void createMirror(TreeNode tree) {
+        if(tree != null){
+            if(tree.left != null && tree.right != null){
+                TreeNode temp = tree.left;
+                tree.left = tree.right;
+                tree.right = temp;
+            }
+            if(tree.left != null && tree.right == null){
+                tree.right = tree.left;
+            }
+            if(tree.left == null && tree.right != null){
+                tree.left = tree.right;
+            }
+        }
+        createMirror(tree.left);
+        createMirror(tree.right);
+
+    }
+
+//Factorial
+    public int factorial(int num){
+        return fact(num);
+    }
+
+    private int fact(int num) {
+        if(num == 0)
+            return 1;
+        return num * fact(num-1);
+    }
+
+    //GFG
+    public int minValue(int a[], int b[], int n)
+    {
+        Arrays.sort(a);
+        Arrays.sort(b);
+        int sum=0;
+        for (int i = 0 , j = b.length -1; i < a.length && j >= 0; i++,j--) {
+            long mul = (long) a[i] * b[j];
+            sum +=mul;
+        }
+        return sum;
+    }
+
+    //GFG
+    void reverseInGroups(ArrayList<Integer> arr, int n, int k) {
+        // code here
+//        ArrayList<Integer> result = new ArrayList<>();
+//        for(int i=0;i<n;i++){
+//            if (i < k) {
+//                result.add(0, arr.get(i));
+//            } else {
+//                result.add(arr.get(i));
+//            }
+//        }
+//        for(int j=k;j<=n-1;j++){
+//            result.set(n-1,arr.get(j));
+//        }
+//        arr = result;
+//        for (int i = 0; i < n; i++) {
+//            System.out.println(arr.get(i));
+//        }
+        for (int i = 0; i < n; i += k)
+        {
+            int left = i;
+
+            // to handle case when k is not multiple
+            // of n
+            int right = Math.min(i + k - 1, n - 1);
+            int temp;
+
+            // reverse the sub-array [left, right]
+            while (left < right)
+            {
+                temp=arr.get(left);
+                arr.set(left,arr.get(right));
+                arr.set(right,temp);
+                left+=1;
+                right-=1;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            System.out.println(arr.get(i));
+        }
+
+    }
+
+    public List<List<Integer>> threeSum(int[] nums, int target) {
+        List<List<Integer>> lists = new ArrayList<>();
+        List<Integer> intermediate = new ArrayList<>();
+        if (nums.length <= 0)
+            return lists;
+        //brute force.
+//        for (int i = 0; i < nums.length; i++) {
+//            for (int j = i + 1; j < nums.length; j++) {
+//                for (int k = j + 1; k < nums.length; k++) {
+//                    int sum = nums[i] + nums[j] + nums[k];
+//                    if (sum == target) {
+//                        if (!checkIfResultArrayHasTriplet(nums[i], nums[j], nums[k], lists)) {
+//                            intermediate.add(nums[i]);
+//                            intermediate.add(nums[j]);
+//                            intermediate.add(nums[k]);
+//                            lists.add(intermediate);
+//                        }
+//                        intermediate = new ArrayList<>();
+//                    }
+//                }
+//            }
+//        }
+
+        //better approach
+        Arrays.sort(nums);  // -4,-1,-1, 0, 1 ,2
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0) {
+                while (nums[i] == nums[i - 1] && i < nums.length - 1)
+                    i++;
+            }
+            for (int j = i + 1, k = nums.length - 1; k > j; ) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == target) {
+                    intermediate.add(nums[i]);
+                    intermediate.add(nums[j]);
+                    intermediate.add(nums[k]);
+                    lists.add(intermediate);
+                    intermediate = new ArrayList<>();
+                    j++;
+                    k--;
+                    while (nums[k] == nums[k + 1]) {
+                        k--;
+                        if (k <= 0) break;
+                    }
+                } else if (sum < target) {
+                    j++;
+                } else if (sum > target) {
+                    k--;
+                }
+            }
+        }
+        return lists;
+    }
+
+    private boolean checkIfResultArrayHasTriplet(int num, int num1, int num2, List<List<Integer>> lists) {
+        for (int i = 0; i < lists.size(); i++) {
+            List<Integer> interim = lists.get(i);
+            boolean b = interim.contains(num) && interim.contains(num1) && interim.contains(num2);
+            return b;
+        }
+        return false;
+    }
+
+    //18.4 Sum
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        if (nums.length <= 0)
+            return new ArrayList<>();;
+        Arrays.sort(nums);
+        return kSum(0, 4, nums, target);
+    }
+
+    private List<List<Integer>> kSum(int start, int k, int[] nums, int target) {
+        List<List<Integer>> lists = new ArrayList<>();
+        if (start == nums.length) {
+            return lists;
+        }
+
+        int avgValue = target / k;
+
+        if (nums[start] > avgValue || avgValue > nums[nums.length - 1]) {
+            return lists;
+        }
+
+        if (k == 2) {
+            return twoSum(nums, target,start);
+        }
+
+        for (int i = start; i < nums.length; ++i) {
+            if (i == start || nums[i] != nums[i - 1]) {
+                for (List<Integer> subset : kSum(i + 1, k - 1, nums, target - nums[i])) {
+                    lists.add(new ArrayList<>(Arrays.asList(nums[i])));
+                    lists.get(lists.size() - 1).addAll(subset);
+                }
+            }
+
+        }
+        return lists;
+    }
+
+    private List<List<Integer>> twoSum(int[] nums, int target,int start) {
+        List<List<Integer>> res = new ArrayList<>();
+        int lo = start, high = nums.length - 1;
+        while (lo < high) {
+            int sum = nums[lo] + nums[high];
+            if(sum < target || (lo > start && nums[lo] == nums[lo-1]))
+                lo++;
+            else if(sum > target || (high < nums.length-1 && nums[high] == nums[high+1]))
+                high--;
+            else{
+                res.add(Arrays.asList(nums[lo],nums[high]));
+                lo++;
+                high--;
+            }
+        }
+        return res;
+    }
+
+    private boolean isIntermediateSummedToTarget(List<Integer> intermediate, int target) {
+        Integer sum = intermediate.stream().reduce(0, Integer::sum);
+        return sum == target;
+    }
+
+    //Pair with largest sum which is less than K in the array
+    public ArrayList<Integer> Max_Sum(int[] arr, int n, int k) {
+        ArrayList<Integer> pairs = new ArrayList<>();
+        Map<List<Integer>, Integer> sumIndexWithSum = new HashMap<>();
+        int maxSumLessThanTarget = 0;
+        if (n == 0)
+            return pairs;
+
+        Arrays.sort(arr);
+        for (int i = 0, j = n - 1; i < n - 1 && j > 0; ) {
+            int sum = arr[i] + arr[j];
+            if (pairs.size() == 0) {
+                if (sum < k) {
+                    pairs.add(0, arr[i]);
+                    pairs.add(1, arr[j]);
+                    sumIndexWithSum.put(Arrays.asList(i, j), sum);
+                }
+            } else {
+                if (sum < k) {
+                    pairs.set(0, arr[i]);
+                    pairs.set(1, arr[j]);
+                    if (!sumIndexWithSum.containsValue(sum)) sumIndexWithSum.put(Arrays.asList(i, j), sum);
+                }
+            }
+            if (sum < k) {
+                maxSumLessThanTarget = Math.max(sum, maxSumLessThanTarget);
+                i++;
+            }
+            if (sum >= k) {
+                j--;
+            }
+        }
+
+        Optional<Map.Entry<List<Integer>, Integer>> maxEntry = sumIndexWithSum.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue());
+        List<Integer> key = maxEntry.isPresent() ? maxEntry.get().getKey() : new ArrayList<>();
+        if (key.size() != 0 && pairs.size() != 0) {
+            pairs.set(0, arr[key.get(0)]);
+            pairs.set(1, arr[key.get(1)]);
+        }
+        if (pairs.size() <= 0) {
+            pairs.add(0);
+            pairs.add(0);
+        }
+        return pairs;
+    }
+
+    //167 - Two Sum II
+    public int[] twoSum2(int[] numbers, int target) {
+        int[] result = new int[2];
+        if (numbers.length <= 0)
+            return new int[]{};
+
+        for (int i = 0, j = numbers.length - 1; i < numbers.length && j > 0; ) {
+            int sum = numbers[i] + numbers[j];
+            if (sum == target) {
+                result[0] = i + 1;
+                result[1] = j + 1;
+                break;
+            }
+            if (sum < target) {
+                i++;
+            }
+            if (sum > target) {
+                j--;
+            }
+        }
+        return result;
     }
 
     //2068 - Strings are equivalent
     public boolean checkAlmostEquivalent(String word1, String word2) {
         boolean isEquivalent = true;
-        Map<Character,Integer> charCountWord1 = new HashMap<>();
-        Map<Character,Integer> charCountWord2 = new HashMap<>();
+        Map<Character, Integer> charCountWord1 = new HashMap<>();
+        Map<Character, Integer> charCountWord2 = new HashMap<>();
         for (int i = 0; i < word1.length(); i++) {
-            if(charCountWord1.containsKey(word1.charAt(i)))
-                charCountWord1.put(word1.charAt(i),charCountWord1.get(word1.charAt(i))+1);
+            if (charCountWord1.containsKey(word1.charAt(i)))
+                charCountWord1.put(word1.charAt(i), charCountWord1.get(word1.charAt(i)) + 1);
             else
-                charCountWord1.put(word1.charAt(i),1);
+                charCountWord1.put(word1.charAt(i), 1);
         }
 
         for (int i = 0; i < word2.length(); i++) {
-            if(charCountWord2.containsKey(word2.charAt(i)))
-                charCountWord2.put(word2.charAt(i),charCountWord2.get(word2.charAt(i))+1);
+            if (charCountWord2.containsKey(word2.charAt(i)))
+                charCountWord2.put(word2.charAt(i), charCountWord2.get(word2.charAt(i)) + 1);
             else
-                charCountWord2.put(word2.charAt(i),1);
+                charCountWord2.put(word2.charAt(i), 1);
         }
         for (Map.Entry<Character, Integer> entry : charCountWord1.entrySet()) {
             Character key = entry.getKey();
             if (Math.abs(entry.getValue() - charCountWord2.getOrDefault(key, 0)) > 3) {
                 isEquivalent = false;
             }
-            if(charCountWord2.containsKey(key)) charCountWord2.remove(key);
+            if (charCountWord2.containsKey(key)) charCountWord2.remove(key);
         }
 
-        for (Map.Entry<Character,Integer> entry1:charCountWord2.entrySet()) {
-            if (Math.abs(entry1.getValue() - charCountWord1.getOrDefault(entry1.getKey(),0))>3){
+        for (Map.Entry<Character, Integer> entry1 : charCountWord2.entrySet()) {
+            if (Math.abs(entry1.getValue() - charCountWord1.getOrDefault(entry1.getKey(), 0)) > 3) {
                 isEquivalent = false;
             }
         }
@@ -270,37 +558,37 @@ public class Solution {
 
     //1704 - String in halves is same
     public boolean halvesAreAlike(String s) {
-        if(s.isEmpty()) return false;
-        int mid =  (s.length() - 1) / 2 ;
-        int count1 =0, count2=0;
-        int i= 0 , j = mid+1;
-        for (; i <= mid && j< s.length(); i++,j++) {
-            count1 += checkForVowel(s,i);
-            count2 += checkForVowel(s,j);
+        if (s.isEmpty()) return false;
+        int mid = (s.length() - 1) / 2;
+        int count1 = 0, count2 = 0;
+        int i = 0, j = mid + 1;
+        for (; i <= mid && j < s.length(); i++, j++) {
+            count1 += checkForVowel(s, i);
+            count2 += checkForVowel(s, j);
         }
-        if(i <= mid){
+        if (i <= mid) {
             for (; i <= mid; i++) {
-                count1 +=  checkForVowel(s,i);
+                count1 += checkForVowel(s, i);
             }
         }
-        if(j <= s.length()){
+        if (j <= s.length()) {
             for (; j < s.length(); j++) {
-                count2 += checkForVowel(s,j);
+                count2 += checkForVowel(s, j);
             }
         }
         return (count1 == count2);
     }
 
     private int checkForVowel(String s, int loopVariable) {
-        int count = 0 ;
-        if(s.charAt(loopVariable) == 'a' || s.charAt(loopVariable) == 'e' || s.charAt(loopVariable) == 'i' || s.charAt(loopVariable) == 'o' || s.charAt(loopVariable) == 'u'
+        int count = 0;
+        if (s.charAt(loopVariable) == 'a' || s.charAt(loopVariable) == 'e' || s.charAt(loopVariable) == 'i' || s.charAt(loopVariable) == 'o' || s.charAt(loopVariable) == 'u'
                 || s.charAt(loopVariable) == 'A' || s.charAt(loopVariable) == 'E' || s.charAt(loopVariable) == 'I' || s.charAt(loopVariable) == 'O' || s.charAt(loopVariable) == 'U')
             count++;
         return count;
     }
 
     public String multiply(String num1, String num2) {
-        if(Integer.parseInt(num1) == 0 || Integer.parseInt(num2) == 0)
+        if (Integer.parseInt(num1) == 0 || Integer.parseInt(num2) == 0)
             return "0";
 
         int carry = 0;
@@ -351,7 +639,7 @@ public class Solution {
                     list1 = intermediateResult.get(i);
                     medianResult = addList(list1, medianResult);
                     finalString = extractResultFrom(medianResult);
-                }else if(medianResult.isEmpty()){//single digit answer case
+                } else if (medianResult.isEmpty()) {//single digit answer case
                     finalString = extractResultFrom(intermediateResult.get(i));
                 }
                 i = i + 2;
