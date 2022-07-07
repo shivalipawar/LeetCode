@@ -107,6 +107,8 @@ public class Solution {
 //        TreeNode resultNode = solution.sortedArrayToBST(new int[]{-10, -3, 0, 5, 9});
 //        System.out.println("Sorted Arr to BST : " + resultNode);
 //        System.out.println(solution.preorderTraversal(resultNode));
+        solution.createMirror(root);
+        System.out.println(solution.preorderTraversal(root));
 
         ListNode node = new ListNode(1);
         node.next = new ListNode(2);
@@ -239,26 +241,19 @@ public class Solution {
 //        System.out.println("Four Sum : " + solution.fourSum(new int[]{1, 0, -1, 0, -2, 2}, 0));
 //        solution.reverseInGroups(new ArrayList(Arrays.asList(1,2,3,4,5)), 5,3);
 //        System.out.println("Minimize the sum of product : " +solution.minValue(new int[] {6, 1, 9, 5, 4}, new int[] {3, 4, 8, 2, 4},5));
-        System.out.println("Factorial : " +solution.factorial(5));
+//        System.out.println("Factorial : " +solution.factorial(5));
     }
 
-    private static void createMirror(TreeNode tree) {
-        if(tree != null){
-            if(tree.left != null && tree.right != null){
-                TreeNode temp = tree.left;
-                tree.left = tree.right;
-                tree.right = temp;
-            }
-            if(tree.left != null && tree.right == null){
-                tree.right = tree.left;
-            }
-            if(tree.left == null && tree.right != null){
-                tree.left = tree.right;
-            }
-        }
-        createMirror(tree.left);
-        createMirror(tree.right);
+    void createMirror(TreeNode tree) {
+       if(tree == null)
+           return;
 
+       TreeNode temp = tree.left;
+       tree.left = tree.right;
+       tree.right = temp;
+
+       createMirror(tree.left);
+       createMirror(tree.right);
     }
 
 //Factorial
