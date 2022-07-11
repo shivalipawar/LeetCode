@@ -60,11 +60,70 @@ public class TryOuts {
         String a="abc";
         String b=new String("abc");
         String c=a;
-        System.out.println("String related questions : ");
-        System.out.println(a==b);         //--> false
-        System.out.println(a.equals(b));  //--> true;
-        System.out.println(c.equals(b));  //--> true;
-        b=null;
-        System.out.println(c.equals(b));  //--> false
+//        System.out.println("String related questions : ");
+//        System.out.println(a==b);         //--> false
+//        System.out.println(a.equals(b));  //--> true;
+//        System.out.println(c.equals(b));  //--> true;
+//        b=null;
+//        System.out.println(c.equals(b));  //--> false
+
+        //Merge 2 array
+        int[] arr1 = {1,2,3};
+        int[] arr2 = {7,9,8,4};
+        int[] result = {1,7,2,9,3,8,4};
+        int[] actualRes = new int[arr1.length+arr2.length];
+
+        int minLen = Math.min(arr1.length, arr2.length);
+        int i=0,j1=0;
+        while (i < minLen) {
+            actualRes[j1] = arr1[i];
+            actualRes[j1+1] = arr2[i];
+            j1+=2;
+            i+=1;
+        }
+
+        if(i < arr1.length){
+            while (i<arr1.length){
+                actualRes[j1] = arr1[i];
+                i++;
+                j1++;
+            }
+
+        }else if(i < arr2.length){
+            while (i<arr2.length){
+                actualRes[j1] = arr2[i];
+                i++;
+                j1++;
+            }
+        }
+//        for (int i1 = 0; i1 < actualRes.length; i1++) {
+//            System.out.println(actualRes[i1]);
+//        }
+
+        //Given string array print distinct character with its count
+        //eg:- 	Input = {apple,banana,chikoo}
+        //Output = {a:4,b:1,c1…}
+
+        Map<Character,Integer> charCount = printDistinctCharFromStringArrayWithItsCount();
+        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
+            System.out.println(entry.getKey() + " "+entry.getValue());
+        }
+    }
+
+    private static Map<Character, Integer> printDistinctCharFromStringArrayWithItsCount() {
+        String[] input = {"apple","banana","chikoo","pear"};
+        Map<Character,Integer> charCount = new HashMap<>();
+        for (int i = 0; i < input.length; i++) {
+            String fruit = input[i];
+            char[] fruitChars = fruit.toCharArray();
+            for (int j = 0; j < fruitChars.length; j++) {
+                if(charCount.containsKey(fruitChars[j])){
+                    charCount.put(fruitChars[j], charCount.get(fruitChars[j])+1);
+                }else{
+                    charCount.put(fruitChars[j], 1);
+                }
+            }
+        }
+        return charCount;
     }
 }

@@ -5,7 +5,7 @@ public class InheritanceTrial {
         Base b = new Child();
         System.out.println("Salary in main "+b.salary);
         b.displaySalary();
-//        Child c = (Child) new Base();         //Throws class cast exception as generic can be made specific
+//        Child c = (Child) new Base();         //Throws class cast exception as generic cant be made specific
         Person p = new Student(1,"Shiv","Pawar");
         p.type();
     }
