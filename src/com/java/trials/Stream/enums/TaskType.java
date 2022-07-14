@@ -1,4 +1,4 @@
-package com.java.trials.models.enums;
+package com.java.trials.Stream.enums;
 
 public enum TaskType {
     READING,WRITING,CODING;

@@ -1,7 +1,6 @@
-package com.java.trials;
+package com.java.trials.Stream;
 
-import com.java.trials.models.Task;
-import com.java.trials.models.enums.TaskType;
+import com.java.trials.Stream.enums.TaskType;
 
 import java.time.LocalDate;
 import java.time.Month;

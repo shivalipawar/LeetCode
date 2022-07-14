@@ -107,8 +107,8 @@ public class Solution {
 //        TreeNode resultNode = solution.sortedArrayToBST(new int[]{-10, -3, 0, 5, 9});
 //        System.out.println("Sorted Arr to BST : " + resultNode);
 //        System.out.println(solution.preorderTraversal(resultNode));
-        solution.createMirror(root);
-        System.out.println(solution.preorderTraversal(root));
+//        solution.createMirror(root);
+//        System.out.println(solution.preorderTraversal(root));
 
         ListNode node = new ListNode(1);
         node.next = new ListNode(2);
@@ -242,6 +242,33 @@ public class Solution {
 //        solution.reverseInGroups(new ArrayList(Arrays.asList(1,2,3,4,5)), 5,3);
 //        System.out.println("Minimize the sum of product : " +solution.minValue(new int[] {6, 1, 9, 5, 4}, new int[] {3, 4, 8, 2, 4},5));
 //        System.out.println("Factorial : " +solution.factorial(5));
+        System.out.println("Binary Search in rotated array  : " +solution.search(new int[]{3,1,},1));
+    }
+
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length-1;
+        return searchEle(nums,left,right,target);
+    }
+
+    private int searchEle(int[] nums, int left, int right, int target) {
+        int mid = (left+right)/2;
+        if(left > right) return -1;
+        if(nums[mid] == target)
+            return mid;
+        if(nums[left] <= nums[mid]){
+            if(target >= nums[left] && target<= nums[mid]){
+                return searchEle(nums,left,mid-1,target);
+            }
+            else{
+                return searchEle(nums,mid+1,right,target);
+            }
+        }else{
+            if(target >= nums[mid] && target <= nums[right]){
+                return searchEle(nums,mid+1,right,target);
+            }else{
+                return searchEle(nums,left,mid-1,target);
+            }
+        }
     }
 
     void createMirror(TreeNode tree) {

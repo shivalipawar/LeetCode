@@ -1,6 +1,6 @@
-package com.java.trials.models;
+package com.java.trials.Stream;
 
-import com.java.trials.models.enums.TaskType;
+import com.java.trials.Stream.enums.TaskType;
 
 import java.time.LocalDate;
 import java.util.HashSet;
