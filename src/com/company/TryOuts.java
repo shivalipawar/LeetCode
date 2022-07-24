@@ -105,9 +105,9 @@ public class TryOuts {
         //Output = {a:4,b:1,c1…}
 
         Map<Character,Integer> charCount = printDistinctCharFromStringArrayWithItsCount();
-        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
-            System.out.println(entry.getKey() + " "+entry.getValue());
-        }
+//        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
+//            System.out.println(entry.getKey() + " "+entry.getValue());
+//        }
     }
 
     private static Map<Character, Integer> printDistinctCharFromStringArrayWithItsCount() {

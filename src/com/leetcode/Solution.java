@@ -1,7 +1,6 @@
 package com.leetcode;
 
-import com.java.trials.customHashMap.Entry;
-
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -242,67 +241,272 @@ public class Solution {
 //        solution.reverseInGroups(new ArrayList(Arrays.asList(1,2,3,4,5)), 5,3);
 //        System.out.println("Minimize the sum of product : " +solution.minValue(new int[] {6, 1, 9, 5, 4}, new int[] {3, 4, 8, 2, 4},5));
 //        System.out.println("Factorial : " +solution.factorial(5));
-        System.out.println("Binary Search in rotated array  : " +solution.search(new int[]{3,1,},1));
+//        System.out.println("Binary Search in rotated array  : " +solution.search(new int[]{3,1,},1));
+//        System.out.println("Binary Search in rotated array 2  : " +solution.search1(new int[]{1,0,1,1,1},0));
+//        System.out.println("Binary Search : " +solution.binSearch(new int[]{2,5},5));
+//        System.out.println("Min in rotated array : " +solution.findMin(new int[]{2,3,4,5,1}));
+//        System.out.println("Min in rotated array 2 : " +solution.findMin2(new int[]{1,1,1}));
+//        System.out.println("Max sum subarray upto k : " +solution.maxSubArraySumUptoK(new int[]{-3,4,3,-2,2,5},4));
+//        System.out.println("Baseball Game: " +solution.calPoints(new String[]{"5","-2","4","C","D","9","+","+"}));
+//        System.out.println(solution.solution1(new int[]{0, 1, 2, 3}));
+        System.out.println(solution.solution("abccbd", new int[]{0,1,2,3,4,5}));
+    }
+
+    public int solution1(int[] A) {
+
+        if (A.length == 0)
+            return 0;
+        BigInteger res = BigInteger.valueOf(A[0]);
+        for (int i = 1; i < A.length; i++) {
+            res = res.multiply(BigInteger.valueOf(A[i]));
+        }
+        if (res.compareTo(BigInteger.ZERO) < 0) {
+            return -1;
+        }
+        if (res.compareTo(BigInteger.ZERO) == 0) {
+            return 0;
+        }
+        return 1;
+    }
+
+    public int solution(String s, int[] c) {
+        int cost = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char chr = s.charAt(i);
+            int index = i;
+            int cSum = 0;
+            int maxEle = Integer.MIN_VALUE;
+            while (i < s.length() && chr == s.charAt(i)) {
+                cSum += c[i];
+                if (c[i] > maxEle) {
+                    maxEle = c[i];
+                }
+                i++;
+            }
+            if (index == i) {
+                continue;
+            }
+            cSum -= maxEle;
+            cost += cSum;
+            i--;
+        }
+        return cost;
+    }
+
+    public int calPoints(String[] ops) {
+        Stack<Integer> valuesStack = new Stack();
+        int minSum = 0;
+        if (ops.length <= 0) {
+            return minSum;
+        }
+        for (int i = 0; i < ops.length; i++) {
+            if (ops[i].equals("C")) {
+                if (valuesStack.size() >= 1) {
+                    valuesStack.pop();
+                }
+            } else if (ops[i].equals("D")) {
+                if (valuesStack.size() >= 1) {
+                    int currValue = valuesStack.peek();
+                    valuesStack.push(currValue * 2);
+                }
+            } else if (ops[i].equals("+")) {
+                if (valuesStack.size() >= 2) {
+                    int firstValue = valuesStack.pop();
+                    int secondValue = valuesStack.pop();
+                    valuesStack.push(secondValue);
+                    valuesStack.push(firstValue);
+                    valuesStack.push(firstValue + secondValue);
+                }
+            } else {
+                valuesStack.push(Integer.parseInt(ops[i]));
+            }
+        }
+        if (valuesStack.size() < 0)
+            return 0;
+        else {
+            while (valuesStack.size() != 0) {
+                minSum += valuesStack.pop();
+            }
+        }
+        return minSum;
+    }
+
+    public Object[] maxSubArraySumUptoK(int[] input, int k) {
+        List<List<Integer>> multipleList = new ArrayList<>();
+        List<Integer> sumList = new ArrayList<>();
+        int maxSum = Integer.MIN_VALUE;
+        for (int i = 0; i < input.length; i++) {
+            List<Integer> intermediate = new ArrayList<>();
+            intermediate.add(input[i]);
+            int currSum = input[i];
+            int innerLoopIndex = 1;
+            for (int j = i + 1; innerLoopIndex < k && j < input.length; j++) {
+                intermediate.add(input[j]);
+                currSum += input[j];
+                innerLoopIndex++;
+            }
+            if (maxSum < currSum) {
+                maxSum = currSum;
+                multipleList.add(intermediate);
+                sumList.add(currSum);
+            }
+        }
+        System.out.println(multipleList.size());
+        Integer indexForList = sumList.size() - 1;
+        return multipleList.get(indexForList).toArray();
+    }
+
+    public int findMin2(int[] nums) {
+        if (nums.length <= 0)
+            return -1;
+        if (nums.length < 2)
+            return nums[0];
+
+        int left = 0, right = nums.length - 1;
+
+        if (nums[right] > nums[left]) {
+            return nums[left];
+        }
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < nums[right]) {            //case 1
+                right = mid;
+            } else if (nums[mid] == nums[right]) {     //case 2
+                right = right - 1;
+            } else {                                 //case 3
+                left = mid + 1;
+            }
+        }
+        return nums[left];
+    }
+
+    public int findMin(int[] nums) {
+        int min = Integer.MAX_VALUE;
+        if (nums.length <= 0)
+            return -1;
+        if (nums.length < 2)
+            return nums[0];
+        int left = 0, right = nums.length - 1;
+
+        if (nums[right] > nums[left]) {
+            return nums[left];
+        }
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (mid < right && nums[mid] > nums[mid + 1])
+                return nums[mid + 1];
+            if (mid > left && nums[mid - 1] > nums[mid])
+                return nums[mid];
+            if (nums[left] < nums[mid]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return min;
+    }
+
+    public int binSearch(int[] nums, int target) {
+        if (nums.length <= 0)
+            return -1;
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (nums[mid] == target)
+                return mid;
+            if (target < nums[mid]) {
+                right = mid - 1;
+            } else if (target > nums[mid]) {
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    public boolean search1(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        return searchEle1(nums, left, right, target);
+    }
+
+    private boolean searchEle1(int[] nums, int left, int right, int target) {
+        int mid = (left + right) / 2;
+        if (left > right) return false;
+        if (nums[mid] == target)
+            return true;
+        while (left < mid && nums[left] == nums[mid]) left++;
+        while (right > mid && nums[right] == nums[mid]) right--;
+        if (nums[left] <= nums[mid]) {
+            if (target >= nums[left] && target <= nums[mid]) {
+                return searchEle1(nums, left, mid - 1, target);
+            } else {
+                return searchEle1(nums, mid + 1, right, target);
+            }
+        } else {
+            if (target >= nums[mid] && target <= nums[right]) {
+                return searchEle1(nums, mid + 1, right, target);
+            } else {
+                return searchEle1(nums, left, mid - 1, target);
+            }
+        }
     }
 
     public int search(int[] nums, int target) {
-        int left = 0, right = nums.length-1;
-        return searchEle(nums,left,right,target);
+        int left = 0, right = nums.length - 1;
+        return searchEle(nums, left, right, target);
     }
 
     private int searchEle(int[] nums, int left, int right, int target) {
-        int mid = (left+right)/2;
-        if(left > right) return -1;
-        if(nums[mid] == target)
+        int mid = (left + right) / 2;
+        if (left > right) return -1;
+        if (nums[mid] == target)
             return mid;
-        if(nums[left] <= nums[mid]){
-            if(target >= nums[left] && target<= nums[mid]){
-                return searchEle(nums,left,mid-1,target);
+        if (nums[left] <= nums[mid]) {
+            if (target >= nums[left] && target <= nums[mid]) {
+                return searchEle(nums, left, mid - 1, target);
+            } else {
+                return searchEle(nums, mid + 1, right, target);
             }
-            else{
-                return searchEle(nums,mid+1,right,target);
-            }
-        }else{
-            if(target >= nums[mid] && target <= nums[right]){
-                return searchEle(nums,mid+1,right,target);
-            }else{
-                return searchEle(nums,left,mid-1,target);
+        } else {
+            if (target >= nums[mid] && target <= nums[right]) {
+                return searchEle(nums, mid + 1, right, target);
+            } else {
+                return searchEle(nums, left, mid - 1, target);
             }
         }
     }
 
     void createMirror(TreeNode tree) {
-       if(tree == null)
-           return;
+        if (tree == null)
+            return;
 
-       TreeNode temp = tree.left;
-       tree.left = tree.right;
-       tree.right = temp;
+        TreeNode temp = tree.left;
+        tree.left = tree.right;
+        tree.right = temp;
 
-       createMirror(tree.left);
-       createMirror(tree.right);
+        createMirror(tree.left);
+        createMirror(tree.right);
     }
 
-//Factorial
-    public int factorial(int num){
+    //Factorial
+    public int factorial(int num) {
         return fact(num);
     }
 
     private int fact(int num) {
-        if(num == 0)
+        if (num == 0)
             return 1;
-        return num * fact(num-1);
+        return num * fact(num - 1);
     }
 
     //GFG
-    public int minValue(int a[], int b[], int n)
-    {
+    public int minValue(int a[], int b[], int n) {
         Arrays.sort(a);
         Arrays.sort(b);
-        int sum=0;
-        for (int i = 0 , j = b.length -1; i < a.length && j >= 0; i++,j--) {
+        int sum = 0;
+        for (int i = 0, j = b.length - 1; i < a.length && j >= 0; i++, j--) {
             long mul = (long) a[i] * b[j];
-            sum +=mul;
+            sum += mul;
         }
         return sum;
     }
@@ -325,8 +529,7 @@ public class Solution {
 //        for (int i = 0; i < n; i++) {
 //            System.out.println(arr.get(i));
 //        }
-        for (int i = 0; i < n; i += k)
-        {
+        for (int i = 0; i < n; i += k) {
             int left = i;
 
             // to handle case when k is not multiple
@@ -335,13 +538,12 @@ public class Solution {
             int temp;
 
             // reverse the sub-array [left, right]
-            while (left < right)
-            {
-                temp=arr.get(left);
-                arr.set(left,arr.get(right));
-                arr.set(right,temp);
-                left+=1;
-                right-=1;
+            while (left < right) {
+                temp = arr.get(left);
+                arr.set(left, arr.get(right));
+                arr.set(right, temp);
+                left += 1;
+                right -= 1;
             }
         }
         for (int i = 0; i < n; i++) {
@@ -416,7 +618,8 @@ public class Solution {
     //18.4 Sum
     public List<List<Integer>> fourSum(int[] nums, int target) {
         if (nums.length <= 0)
-            return new ArrayList<>();;
+            return new ArrayList<>();
+        ;
         Arrays.sort(nums);
         return kSum(0, 4, nums, target);
     }
@@ -434,7 +637,7 @@ public class Solution {
         }
 
         if (k == 2) {
-            return twoSum(nums, target,start);
+            return twoSum(nums, target, start);
         }
 
         for (int i = start; i < nums.length; ++i) {
@@ -449,17 +652,17 @@ public class Solution {
         return lists;
     }
 
-    private List<List<Integer>> twoSum(int[] nums, int target,int start) {
+    private List<List<Integer>> twoSum(int[] nums, int target, int start) {
         List<List<Integer>> res = new ArrayList<>();
         int lo = start, high = nums.length - 1;
         while (lo < high) {
             int sum = nums[lo] + nums[high];
-            if(sum < target || (lo > start && nums[lo] == nums[lo-1]))
+            if (sum < target || (lo > start && nums[lo] == nums[lo - 1]))
                 lo++;
-            else if(sum > target || (high < nums.length-1 && nums[high] == nums[high+1]))
+            else if (sum > target || (high < nums.length - 1 && nums[high] == nums[high + 1]))
                 high--;
-            else{
-                res.add(Arrays.asList(nums[lo],nums[high]));
+            else {
+                res.add(Arrays.asList(nums[lo], nums[high]));
                 lo++;
                 high--;
             }
