@@ -5,6 +5,7 @@ import com.java.trials.Stream.enums.TaskType;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StreamDemo {
@@ -62,11 +63,19 @@ public class StreamDemo {
         String collect = tasks.stream().map(Task::getTitle).collect(Collectors.joining(", "));
         System.out.println("Titles combined is "+collect);
 
-
-
         //Count total number of tags
 //        IntSummaryStatistics count = tasks.stream().collect(Collectors.summarizingInt(task -> task.getTags().size()));
 //        System.out.println(count);
+
+        countEachString();
+    }
+
+    private static void countEachString() {
+        List<String> names = Arrays.asList("john","john","joe");
+        Map<String, Long> stringLongMap = names.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        for (Map.Entry<String,Long> entry: stringLongMap.entrySet()) {
+            System.out.println(entry.getKey()+entry.getValue());
+        }
     }
 
     private static void createPartitionOfDataOnDate(List<Task> tasks) {
@@ -122,7 +131,6 @@ public class StreamDemo {
         System.out.println("Number of reading titles: "+readingTitlesSize);
     }
 
-
     private static void top5ReadingTitleSortedByCreationDate(List<Task> tasks) {
         List<String> readingTitles = tasks.stream().filter(task -> task.getTaskType().equals(TaskType.READING))
                 .sorted(Comparator.comparing(Task::getCreatedOn))
@@ -132,7 +140,6 @@ public class StreamDemo {
 
         readingTitles.forEach(System.out::println);
     }
-
 
     private static void findDistinctTask(List<Task> tasks) {
         List<String> distinctTask = tasks.stream().distinct().map(Task::getTitle).collect(Collectors.toList());
