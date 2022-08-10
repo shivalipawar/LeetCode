@@ -1,21 +1,29 @@
 package com.java.trials.Stream;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StreamDemo2 {
 
     public static void main(String[] args) {
-        //        removeDulpicatesUsingStream();
-        findDuplicatesAndPrintThem();
+//          removeDulpicatesUsingStream();
+//        findDuplicatesAndPrintThem();
 //        printAlternateNumberUsingStream();
 //        nonPrimitiveToPrimitive();
 //        nonPrimitiveToStreamsAndNonPrimitive();
+        everyElementWithItsCount();
     }
+
+    private static void everyElementWithItsCount() {
+        List<String> list = Arrays.asList("cat","age","ball","cat","pen","omen");
+        Map<String, Long> collect = list.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        for(Map.Entry<String,Long> entry : collect.entrySet()){
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
+    }
+
     private static void findDuplicatesAndPrintThem() {
         List<Integer> duplicates = Arrays.asList(1,2,1,3,4,2);
         Set<Integer> collect = new HashSet<>();
