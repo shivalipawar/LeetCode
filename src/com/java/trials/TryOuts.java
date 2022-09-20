@@ -109,6 +109,13 @@ public class TryOuts {
 //        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
 //            System.out.println(entry.getKey() + " "+entry.getValue());
 //        }
+        Employee e = new Employee(1,"aa");
+        final Employee bb = e;
+        //bb = null;                    //This does not work.
+        e.setName("cc");                //this means value within reference is not final.
+        System.out.println("emp 1"+e.getName());
+        System.out.println("emp 11"+bb.getName());
+
     }
 
     private static Map<Character, Integer> printDistinctCharFromStringArrayWithItsCount() {
@@ -126,5 +133,23 @@ public class TryOuts {
             }
         }
         return charCount;
+    }
+
+    public boolean solution(String S) {
+        // write your code in Java SE 8
+        char[] c = S.toCharArray();
+        int index =0;
+        while (index < c.length && c[index] != 'b'){
+            index++;
+        }
+        if(index == c.length)
+            return true;
+
+        while (index < c.length && c[index] != 'a'){
+            index++;
+        }
+        if(index == c.length)
+            return true;
+        return false;
     }
 }

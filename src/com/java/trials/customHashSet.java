@@ -8,7 +8,7 @@ public class customHashSet {
         set.add(10);
         set.add(10);
         set.add(20);
-//        System.out.println(set.size());
+        System.out.println(set.size());
 
         HashSet<Employee> employeeSet = new HashSet<>();
         Employee e1 = new Employee(1,"Sam");

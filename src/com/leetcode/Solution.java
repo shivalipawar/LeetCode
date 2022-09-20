@@ -249,7 +249,50 @@ public class Solution {
 //        System.out.println("Max sum subarray upto k : " +solution.maxSubArraySumUptoK(new int[]{-3,4,3,-2,2,5},4));
 //        System.out.println("Baseball Game: " +solution.calPoints(new String[]{"5","-2","4","C","D","9","+","+"}));
 //        System.out.println(solution.solution1(new int[]{0, 1, 2, 3}));
-        System.out.println(solution.solution("abccbd", new int[]{0,1,2,3,4,5}));
+//        System.out.println(solution.solution("abccbd", new int[]{0,1,2,3,4,5}));
+//        System.out.println(solution.waysToMakeFair( new int[]{2,1,6,4}));
+        solution.nextGreaterElement( new int[]{4,1,2}, new int[]{1,3,4,2});
+    }
+
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        int[] result = new int[nums1.length];
+        if(nums1.length < 0 || nums2.length < 0){
+            return result;
+        }
+        Map<Integer, Integer> valueWithIndex = new HashMap();
+        for(int i =0 ; i< nums2.length ;i++){
+            valueWithIndex.put(nums2[i],i);
+        }
+
+        int k =0, i =0;
+        for(int j =0; j < nums1.length; j++){
+            int number = nums1[j];
+            if(valueWithIndex.containsKey(number)){
+                int indexToSearchAfter = valueWithIndex.get(number);
+                System.out.println("index to search "+indexToSearchAfter);
+                for(i = indexToSearchAfter + 1; i < nums2.length ; i++){
+                    if(nums2[i] > number){
+                        result[k] = nums2[i];
+                        k++;
+                        break;
+                    }
+                }
+                if(i == nums2.length){
+                    result[k] = -1;
+                    k++;
+                }
+
+            }
+        }
+        for (int m:result) {
+            System.out.print(" "+m+" ");
+        }
+        return result;
+    }
+
+    public int waysToMakeFair(int[] nums) {
+        return 0;
     }
 
     public int solution1(int[] A) {
